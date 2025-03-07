@@ -1,0 +1,44 @@
+﻿@model List<ActividadAutonoma.Services.PokemonSummary>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Lista de Pokémon</h1>
+
+    @if (Model != null && Model.Any())  <!-- Verifica que el modelo no sea nulo y tenga elementos -->
+    {
+        <div class="row">
+            @foreach (var (pokemon, index) in Model.Select((p, i) => (p, i + ViewBag.Offset + 1)))
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card shadow-sm">
+                        <img src="@pokemon.PokemonImageUrl" alt="@pokemon.PokemonName" class="card-img-top" />
+                        <div class="card-body">
+                            <h5 class="card-title text-capitalize">@pokemon.PokemonName</h5>
+                            <a asp-action="Details" asp-route-name="@pokemon.PokemonName" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No se encontraron Pokémon para mostrar.</p> <!-- Mensaje en caso de que no haya Pokémon -->
+    }
+
+    <div class="d-flex justify-content-between mt-4">
+        @if (ViewBag.Previous != null)
+        {
+            <a asp-action="Index" asp-route-offset="@ViewBag.Previous" class="btn btn-primary">← Anterior</a>
+        }
+        else
+        {
+            <span></span>
+        }
+
+        @if (ViewBag.Next != null)
+        {
+            <a asp-action="Index" asp-route-offset="@ViewBag.Next" class="btn btn-primary">Siguiente →</a>
+        }
+    </div>
+</div>
+ 
