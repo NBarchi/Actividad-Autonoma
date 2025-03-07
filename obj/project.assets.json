@@ -61,11 +61,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lenin.barrera\\Desktop\\nb\\actividad mvc .net\\ActividadAutonoma\\ActividadAutonoma.csproj",
+      "projectUniqueName": "C:\\Users\\lenin.barrera\\Desktop\\nb\\Actividad Autonoma\\ActividadAutonoma.csproj",
       "projectName": "ActividadAutonoma",
-      "projectPath": "C:\\Users\\lenin.barrera\\Desktop\\nb\\actividad mvc .net\\ActividadAutonoma\\ActividadAutonoma.csproj",
+      "projectPath": "C:\\Users\\lenin.barrera\\Desktop\\nb\\Actividad Autonoma\\ActividadAutonoma.csproj",
       "packagesPath": "C:\\Users\\lenin.barrera\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lenin.barrera\\Desktop\\nb\\actividad mvc .net\\ActividadAutonoma\\obj\\",
+      "outputPath": "C:\\Users\\lenin.barrera\\Desktop\\nb\\Actividad Autonoma\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

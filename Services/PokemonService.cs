@@ -12,53 +12,61 @@ namespace ActividadAutonoma.Services
             _httpClient = httpClient;
         }
 
-        public async Task<PokemonListResponse> GetPokemonsAsync(int offset = 0, int limit = 20)
+        public async Task<PokemonResponse> GetPokemonsAsync(int offset = 0, int limit = 20)
         {
             var response = await _httpClient.GetStringAsync($"https://pokeapi.co/api/v2/pokemon?offset={offset}&limit={limit}");
-            var pokemonsResponse = JsonConvert.DeserializeObject<PokemonListResponse>(response);
+            var pokemons = JsonConvert.DeserializeObject<PokemonResponse>(response);
 
-            if (pokemonsResponse?.PokemonItems != null)
+            if (pokemons?.Results != null)
             {
-                foreach (var item in pokemonsResponse.PokemonItems)
+                foreach (var item in pokemons.Results)
                 {
-                    // Extraemos el ID desde la URL
                     var segments = item.Url.TrimEnd('/').Split('/');
                     var id = segments.Last();
-
-                    // Generamos la URL de la imagen
-                    item.PokemonImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png";
+                    item.ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png";
                 }
             }
-
-            return pokemonsResponse ?? new PokemonListResponse();
+            return pokemons ?? new PokemonResponse();
         }
 
         public async Task<Pokemon> GetPokemonAsync(string param)
         {
-            var response = await _httpClient.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{param}");
-            var pokemonDetails = JsonConvert.DeserializeObject<Pokemon>(response);
-
-            if (pokemonDetails == null)
+            try
             {
-                throw new Exception("No se pudo deserializar el Pokémon.");
+                var response = await _httpClient.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{param}");
+                
+                // Verificamos que la respuesta no sea nula o vacía
+                if (string.IsNullOrEmpty(response))
+                {
+                    throw new Exception("La respuesta de la API es vacía.");
+                }
+
+                var pokemon = JsonConvert.DeserializeObject<Pokemon>(response);
+
+                if (pokemon == null)
+                {
+                    throw new Exception("No se encontró el Pokémon");
+                }
+
+                return pokemon;
             }
-
-            return pokemonDetails;
+            catch (HttpRequestException httpEx)
+            {
+                // Error al realizar la solicitud HTTP
+                throw new Exception("Error al realizar la solicitud HTTP.", httpEx);
+            }
+            catch (JsonException jsonEx)
+            {
+                // Error al deserializar la respuesta JSON
+                throw new Exception("Error al deserializar la respuesta JSON.", jsonEx);
+            }
+            catch (Exception ex)
+            {
+                // Captura cualquier otra excepción genérica
+                throw new Exception("Ocurrió un error inesperado.", ex);
+            }
         }
+
     }
 
-    public class PokemonListResponse
-    {
-        public int TotalCount { get; set; }
-        public string NextPage { get; set; }
-        public string PreviousPage { get; set; }
-        public List<PokemonSummary> PokemonItems { get; set; }
-    }
-
-    public class PokemonSummary
-    {
-        public string PokemonName { get; set; } = string.Empty;
-        public string Url { get; set; } = string.Empty;
-        public string PokemonImageUrl { get; set; } = string.Empty;
-    }
 }

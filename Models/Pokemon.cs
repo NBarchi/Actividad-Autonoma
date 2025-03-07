@@ -1,62 +1,45 @@
 using Newtonsoft.Json;
 
+
 namespace ActividadAutonoma.Models
 {
     public class Pokemon
     {
-        public int PokemonId { get; set; }
-        public string PokemonName { get; set; }
-        public int PokemonHeight { get; set; }
-        public int PokemonWeight { get; set; }
-        public SpriteImages Images { get; set; } 
-        public List<SkillInfo> Skills { get; set; }
-        public List<PokemonType> PokemonTypes { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Height { get; set; }
+        public int Weight { get; set; }
+        public Sprites Sprites { get; set; } 
+        public List<TypeInfo> Types { get; set; }
     }
 
-    public class SpriteImages
+    public class Sprites
     {
-        [JsonProperty("back_default")]
-        public string DefaultBack { get; set; }
-
-        [JsonProperty("back_female")]
-        public string FemaleBack { get; set; }
-
-        [JsonProperty("back_shiny")]
-        public string ShinyBack { get; set; }
-
-        [JsonProperty("back_shiny_female")]
-        public string ShinyFemaleBack { get; set; }
-
         [JsonProperty("front_default")]
-        public string DefaultFront { get; set; }
-
-        [JsonProperty("front_female")]
-        public string FemaleFront { get; set; }
-
-        [JsonProperty("front_shiny")]
-        public string ShinyFront { get; set; }
-
-        [JsonProperty("front_shiny_female")]
-        public string ShinyFemaleFront { get; set; }
+        public string FrontDefault { get; set; }
+    }
+    public class TypeDetail
+    {
+        public string Name { get; set; }
     }
 
-    public class SkillInfo
+    public class TypeInfo
     {
-        public Skill SkillDetail { get; set; }
+        public TypeDetail Type { get; set; }
+    } 
+
+    public class PokemonResponse
+    {
+        public int Count { get; set; }
+        public string Next { get; set; }
+        public string Previous { get; set; }
+        public List<PokemonItem> Results { get; set; }
     }
 
-    public class Skill
+    public class PokemonItem
     {
-        public string SkillName { get; set; }
-    }
-
-    public class PokemonType
-    {
-        public TypeDetails TypeDetail { get; set; }
-    }
-
-    public class TypeDetails
-    {
-        public string TypeName { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Url { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
     }
 }

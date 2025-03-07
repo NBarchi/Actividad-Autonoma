@@ -2,7 +2,6 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ActividadAutonoma.Models;
 using ActividadAutonoma.Services;
-using System.Threading.Tasks;
 
 namespace ActividadAutonoma.Controllers
 {
@@ -19,20 +18,19 @@ namespace ActividadAutonoma.Controllers
 
         public async Task<IActionResult> Index(int offset = 0)
         {
-            var pokemonListResponse = await _pokemonService.GetPokemonsAsync(offset, 20);
+            var pokemonsResponse = await _pokemonService.GetPokemonsAsync(offset, 20);
 
             ViewBag.Offset = offset;
             ViewBag.Next = offset + 20;
             ViewBag.Previous = (offset - 20) >= 0 ? offset - 20 : (int?)null;
 
-            // Se ha actualizado para usar PokemonItems en lugar de Results
-            return View(pokemonListResponse.PokemonItems);
+            return View(pokemonsResponse.Results);
         }
 
         public async Task<IActionResult> Details(string name)
         {
-            var pokemonDetails = await _pokemonService.GetPokemonAsync(name);
-            return View(pokemonDetails);
+            var pokemon = await _pokemonService.GetPokemonAsync(name);
+            return View(pokemon);
         }
 
         public IActionResult Privacy()
